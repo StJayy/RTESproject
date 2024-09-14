@@ -36,5 +36,10 @@ Dopo la compilazione, puoi eseguire il test della coda:
 
 Per utilizzare la libreria nel tuo progetto, includi l'header principale:
 
+```c
 #include "libraryF.h"
+```
+
+## Conclusione
+Questo README fornisce una panoramica del tuo progetto, elenca i file principali, spiega come compilare e testare la libreria e fornisce un breve esempio di utilizzo. Puoi personalizzarlo ulteriormente aggiungendo istruzioni d'uso più dettagliate, documentazione API o qualsiasi altra informazione rilevante sul tuo progetto.
 
