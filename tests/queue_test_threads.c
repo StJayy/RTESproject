@@ -45,7 +45,6 @@ void* thread_function(void* arg) {
             free(array);
         }
 
-        //sleep(1);
         print_queue_state(&queue);
 
         if (i % 2 == 0) {  // Ogni due push, facciamo un pull
