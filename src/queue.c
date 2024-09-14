@@ -1,3 +1,5 @@
+#define _POSIX_C_SOURCE 199309L
+
 #include "queue.h"
 #include "scheduling_policy.h"
 #include <stdlib.h>
@@ -5,8 +7,6 @@
 #include <pthread.h>
 #include <unistd.h>
 #include <time.h>
-
-#define _POSIX_C_SOURCE 199309L
 
 void queue_init(Queue* q, SchedulingPolicy policy) {
     q->head = NULL;
