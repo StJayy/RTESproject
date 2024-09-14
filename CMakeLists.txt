@@ -14,7 +14,6 @@ set(SOURCES
 
 # Aggiungi i file di test
 set(TEST_SOURCES
-    tests/queue_test.c
     tests/queue_test_threads.c
 )
 
@@ -26,13 +25,17 @@ target_include_directories(libraryF PUBLIC include)
 
 # Crea gli eseguibili di test
 add_executable(queue_test tests/queue_test_threads.c)
-target_link_libraries(queue_test libraryF)
 
 # Aggiungi il supporto per i thread
 find_package(Threads REQUIRED)
-target_link_libraries(libraryF Threads::Threads)
-target_link_libraries(queue_test Threads::Threads)
+
+# Linking delle librerie con sintassi keyword
+target_link_libraries(queue_test PRIVATE libraryF Threads::Threads)
+target_link_libraries(libraryF PRIVATE Threads::Threads)
 
 # Opzioni di compilazione
 target_compile_options(libraryF PRIVATE -Wall -Wextra -pedantic)
 target_compile_options(queue_test PRIVATE -Wall -Wextra -pedantic)
+
+# Aggiungi definizioni per supportare le funzioni POSIX su Windows
+add_definitions(-D_POSIX_C_SOURCE=200809L)

@@ -1,3 +1,26 @@
+
+#define _POSIX_C_SOURCE 200809L
+#include <time.h>
+
+#ifdef _WIN32
+#include <windows.h>
+#ifndef CLOCK_REALTIME
+#define CLOCK_REALTIME 0
+#endif
+
+int clock_gettime(int clk_id, struct timespec *tp) {
+    FILETIME ft;
+    ULARGE_INTEGER li;
+    GetSystemTimeAsFileTime(&ft);
+    li.LowPart = ft.dwLowDateTime;
+    li.HighPart = ft.dwHighDateTime;
+    tp->tv_sec = (long)((li.QuadPart - 116444736000000000LL) / 10000000LL);
+    tp->tv_nsec = (long)((li.QuadPart % 10000000LL) * 100);
+    return 0;
+}
+#endif
+
+
 #include "queue.h"
 #include "scheduling_policy.h"
 #include <stdlib.h>
@@ -5,6 +28,15 @@
 #include <pthread.h>
 #include <unistd.h>
 #include <time.h>
+
+#ifndef CLOCK_MONOTONIC
+#define CLOCK_MONOTONIC 1
+#endif
+
+#ifndef TIMER_ABSTIME
+#define TIMER_ABSTIME 1
+#endif
+
 
 void queue_init(Queue* q, SchedulingPolicy policy) {
     q->head = NULL;
@@ -56,7 +88,7 @@ void* queue_pull(Queue* q) {
     return result;
 }
 
-/*
+
 void* aging_thread_function(void* arg) {
     Queue* q = (Queue*)arg;
     struct timespec ts;
@@ -64,7 +96,7 @@ void* aging_thread_function(void* arg) {
         pthread_mutex_lock(&q->update_mutex);
         //Questa struttura a differenza di un semplice sleep() facilita la coordinazione con altri thread e ne migliora la flessibilità 
         clock_gettime(CLOCK_REALTIME, &ts);
-        ts.tv_nsec += 10000000;  //100ms
+        ts.tv_nsec += 1000000;  //100ms
         pthread_cond_timedwait(&q->update_cond, &q->update_mutex, &ts); //thread rimane bloccato per tempo ts
         pthread_mutex_unlock(&q->update_mutex);
 
@@ -72,19 +104,27 @@ void* aging_thread_function(void* arg) {
     }
     return NULL;
 }
-*/
 
 
+
+/*
 void* aging_thread_function(void* arg) {
     Queue* q = (Queue*)arg;
-    struct timespec ts = {0, 10000000}; // 100ms
+    struct timespec ts;
+    clock_gettime(CLOCK_MONOTONIC, &ts);
 
     while (!q->should_terminate) {
-        nanosleep(&ts, NULL);
+        ts.tv_nsec += 10000000; // 100ms
+        if (ts.tv_nsec >= 1000000000) {
+            ts.tv_sec += 1;
+            ts.tv_nsec -= 1000000000;
+        }
+        clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME, &ts, NULL);
         update_priorities(q);
     }
     return NULL;
 }
+*/
 
 
 

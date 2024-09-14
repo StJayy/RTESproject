@@ -1,2 +1,2 @@
-C:\msys64\mingw64\bin\ar.exe qc liblibraryF.a CMakeFiles/libraryF.dir/src/queue.c.obj CMakeFiles/libraryF.dir/src/scheduling_policy.c.obj CMakeFiles/libraryF.dir/src/thread_safety.c.obj
-C:\msys64\mingw64\bin\ranlib.exe liblibraryF.a
+C:\MinGW\bin\ar.exe qc liblibraryF.a CMakeFiles/libraryF.dir/src/queue.c.obj CMakeFiles/libraryF.dir/src/scheduling_policy.c.obj CMakeFiles/libraryF.dir/src/thread_safety.c.obj
+C:\MinGW\bin\ranlib.exe liblibraryF.a
