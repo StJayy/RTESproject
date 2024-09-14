@@ -39,13 +39,12 @@ void* thread_function(void* arg) {
                 if (*(int*)array[j].data == *data) {
                     printf("Thread %d: pushed element %d - Priority: %d, Age: %d\n", 
                             thread_id, *data, priority, array[j].age);
+                    print_queue_state(&queue);
                     break;
                 }
             }
             free(array);
         }
-
-        print_queue_state(&queue);
 
         if (i % 2 == 0) {  // Ogni due push, facciamo un pull
             ArrayElementData* array = queue_to_array(&queue, &queue.size);

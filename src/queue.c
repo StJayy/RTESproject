@@ -1,4 +1,6 @@
-#define _POSIX_C_SOURCE 199309L
+#if defined(_POSIX_TIMERS) && (_POSIX_TIMERS > 0)
+#define HAS_CLOCK_REALTIME
+#endif
 
 #include "queue.h"
 #include "scheduling_policy.h"
@@ -56,6 +58,7 @@ void* queue_pull(Queue* q) {
     return result;
 }
 
+/*
 void* aging_thread_function(void* arg) {
     Queue* q = (Queue*)arg;
     struct timespec ts;
@@ -63,7 +66,7 @@ void* aging_thread_function(void* arg) {
         pthread_mutex_lock(&q->update_mutex);
         //Questa struttura a differenza di un semplice sleep() facilita la coordinazione con altri thread e ne migliora la flessibilità 
         clock_gettime(CLOCK_REALTIME, &ts);
-        ts.tv_nsec += 10000000;  //10ms
+        ts.tv_nsec += 10000000;  //100ms
         pthread_cond_timedwait(&q->update_cond, &q->update_mutex, &ts); //thread rimane bloccato per tempo ts
         pthread_mutex_unlock(&q->update_mutex);
 
@@ -71,6 +74,20 @@ void* aging_thread_function(void* arg) {
     }
     return NULL;
 }
+*/
+
+
+void* aging_thread_function(void* arg) {
+    Queue* q = (Queue*)arg;
+    struct timespec ts = {0, 10000000}; // 100ms
+
+    while (1) {
+        nanosleep(&ts, NULL);
+        update_priorities(q);
+    }
+    return NULL;
+}
+
 
 void update_priorities(Queue* q) {
     pthread_mutex_lock(&q->update_mutex);
@@ -79,10 +96,12 @@ void update_priorities(Queue* q) {
     QueueElement* current = q->head;
     while (current != NULL) {
         current->age++;
-        if (current->age % 10 == 0 && current->priority < MAX_PRIORITY) {
+        if (current->age >= 10 && current->priority < MAX_PRIORITY) {
             current->priority++;
+            current->age = 0;
             printf("PROCESSO %d UPGRADE DI PRIORITA A %d\n", *(int*)current->data, current->priority);
         }
+
         current = current->next;
     }
 
@@ -90,6 +109,7 @@ void update_priorities(Queue* q) {
     pthread_cond_broadcast(&q->update_cond);
     pthread_mutex_unlock(&q->update_mutex);
 }
+
 
 void print_queue_state(Queue* q) {
     thread_safety_lock(&q->ts);
