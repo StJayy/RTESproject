@@ -30,7 +30,9 @@ Per le istruzioni dettagliate sulla compilazione del progetto, si prega di consu
 
 Dopo la compilazione, puoi eseguire il test della coda:
 
+```bash
 ./queue_test_threads
+```
 
 ## Utilizzo
 

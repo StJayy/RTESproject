@@ -10,12 +10,16 @@
 
 1. Se non è già presente, crea una directory di build:
 
-mkdir build cd build
-
+```bash
+mkdir build 
+cd build
+```
 
 2. Configura il progetto con CMake:
 
+```bash
 cmake ..
+```
 
 
 ## Compilazione su Sistemi Specifici
@@ -25,11 +29,15 @@ cmake ..
 1. Assicurati che MinGW sia installato e nel PATH di sistema.
 2. Usa il seguente comando per configurare:
 
+```bash
 cmake -G "MinGW Makefiles" ..
+```
 
 3. Compila con:
 
+```bash
 mingw32-make
+```
 
 
 ### Linux
@@ -51,7 +59,9 @@ mingw32-make
 
 Dopo la compilazione, puoi eseguire i test con:
 
+```bash
 ./queue_test_threads
+```
 
 
 Per ulteriori informazioni o assistenza, consulta la documentazione di CMake o apri una issue nel repository del progetto.
