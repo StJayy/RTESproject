@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "stddef.h": "c",
+        "scheduling_policy.h": "c"
+    }
+}

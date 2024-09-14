@@ -1,0 +1,26 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch Queue Test",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/bin/queue_test.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "C:\\msys64\\mingw64\\bin\\gdb.exe", // Assicurati che questo percorso sia corretto per il tuo debugger
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "Build queue_test using Makefile" // Assicurati che corrisponda al label del tuo task di build in tasks.json
+        }
+    ]
+}
