@@ -92,7 +92,7 @@ void* queue_pull(Queue* q) {
 void* aging_thread_function(void* arg) {
     Queue* q = (Queue*)arg;
     struct timespec ts;
-    while (1) {
+    while (!q->should_terminate) {
         pthread_mutex_lock(&q->update_mutex);
         //Questa struttura a differenza di un semplice sleep() facilita la coordinazione con altri thread e ne migliora la flessibilità 
         clock_gettime(CLOCK_REALTIME, &ts);
@@ -105,26 +105,6 @@ void* aging_thread_function(void* arg) {
     return NULL;
 }
 
-
-
-/*
-void* aging_thread_function(void* arg) {
-    Queue* q = (Queue*)arg;
-    struct timespec ts;
-    clock_gettime(CLOCK_MONOTONIC, &ts);
-
-    while (!q->should_terminate) {
-        ts.tv_nsec += 10000000; // 100ms
-        if (ts.tv_nsec >= 1000000000) {
-            ts.tv_sec += 1;
-            ts.tv_nsec -= 1000000000;
-        }
-        clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME, &ts, NULL);
-        update_priorities(q);
-    }
-    return NULL;
-}
-*/
 
 
 

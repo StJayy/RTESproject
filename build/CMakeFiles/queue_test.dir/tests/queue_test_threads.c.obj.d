@@ -1,17 +1,38 @@
 CMakeFiles/queue_test.dir/tests/queue_test_threads.c.obj: \
- C:\Users\feddo\OneDrive\Desktop\RTESproject\tests\queue_test_threads.c \
- c:\mingw\include\stdio.h c:\mingw\include\_mingw.h \
- c:\mingw\include\msvcrtver.h c:\mingw\include\w32api.h \
- c:\mingw\include\sdkddkver.h \
- c:\mingw\lib\gcc\mingw32\6.3.0\include\stddef.h \
- c:\mingw\include\sys/types.h \
- c:\mingw\lib\gcc\mingw32\6.3.0\include\stdarg.h \
- c:\mingw\include\stdlib.h c:\mingw\include\pthread.h \
- c:\mingw\include\_ptw32.h c:\mingw\include\time.h \
- c:\mingw\include\sys\types.h c:\mingw\include\sched.h \
- c:\mingw\include\unistd.h c:\mingw\include\io.h \
- c:\mingw\include\stdint.h c:\mingw\include\process.h \
- c:\mingw\include\getopt.h c:\mingw\include\assert.h \
- C:/Users/feddo/OneDrive/Desktop/RTESproject/include/queue.h \
- C:/Users/feddo/OneDrive/Desktop/RTESproject/include/thread_safety.h \
- c:\mingw\lib\gcc\mingw32\6.3.0\include\stdatomic.h
+ C:\Users\feddo\Desktop\RTESproject\tests\queue_test_threads.c \
+ C:/msys64/mingw64/include/stdio.h \
+ C:/msys64/mingw64/include/corecrt_stdio_config.h \
+ C:/msys64/mingw64/include/corecrt.h C:/msys64/mingw64/include/_mingw.h \
+ C:/msys64/mingw64/include/_mingw_mac.h \
+ C:/msys64/mingw64/include/_mingw_secapi.h \
+ C:/msys64/mingw64/include/vadefs.h \
+ C:/msys64/mingw64/include/sdks/_mingw_ddk.h \
+ C:/msys64/mingw64/include/_mingw_off_t.h \
+ C:/msys64/mingw64/include/swprintf.inl \
+ C:/msys64/mingw64/include/sec_api/stdio_s.h \
+ C:/msys64/mingw64/include/stdlib.h \
+ C:/msys64/mingw64/include/corecrt_wstdlib.h \
+ C:/msys64/mingw64/include/limits.h C:/msys64/mingw64/include/crtdefs.h \
+ C:/msys64/mingw64/include/sec_api/stdlib_s.h \
+ C:/msys64/mingw64/include/malloc.h \
+ C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/mm_malloc.h \
+ C:/msys64/mingw64/include/errno.h C:/msys64/mingw64/include/pthread.h \
+ C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/stddef.h \
+ C:/msys64/mingw64/include/stddef.h C:/msys64/mingw64/include/sys/types.h \
+ C:/msys64/mingw64/include/process.h \
+ C:/msys64/mingw64/include/corecrt_startup.h \
+ C:/msys64/mingw64/include/signal.h \
+ C:/msys64/mingw64/include/pthread_signal.h \
+ C:/msys64/mingw64/include/time.h C:/msys64/mingw64/include/sys/timeb.h \
+ C:/msys64/mingw64/include/sec_api/sys/timeb_s.h \
+ C:/msys64/mingw64/include/_timeval.h \
+ C:/msys64/mingw64/include/pthread_time.h \
+ C:/msys64/mingw64/include/pthread_compat.h \
+ C:/msys64/mingw64/include/pthread_unistd.h \
+ C:/msys64/mingw64/include/unistd.h C:/msys64/mingw64/include/io.h \
+ C:/msys64/mingw64/include/string.h \
+ C:/msys64/mingw64/include/sec_api/string_s.h \
+ C:/msys64/mingw64/include/getopt.h C:/msys64/mingw64/include/assert.h \
+ C:/Users/feddo/Desktop/RTESproject/include/queue.h \
+ C:/Users/feddo/Desktop/RTESproject/include/thread_safety.h \
+ C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/stdatomic.h

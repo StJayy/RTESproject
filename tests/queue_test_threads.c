@@ -46,6 +46,8 @@ void* thread_function(void* arg) {
             free(array);
         }
 
+        usleep(3000);
+
         if (i % 2 == 0) {  // Ogni due push, facciamo un pull
             ArrayElementData* array = queue_to_array(&queue, &queue.size);
             if (array != NULL && queue.size > 0) {
