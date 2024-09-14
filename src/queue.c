@@ -1,7 +1,3 @@
-#if defined(_POSIX_TIMERS) && (_POSIX_TIMERS > 0)
-#define HAS_CLOCK_REALTIME
-#endif
-
 #include "queue.h"
 #include "scheduling_policy.h"
 #include <stdlib.h>
@@ -22,13 +18,15 @@ void queue_init(Queue* q, SchedulingPolicy policy) {
 
     //Mutex + condition che gestiscono specificatamente l'aggiornamento delle priorità
     pthread_mutex_init(&q->update_mutex, NULL);
-    pthread_cond_init(&q->update_cond, NULL);   
+    pthread_cond_init(&q->update_cond, NULL);
+    q->should_terminate = 0;   
 }
 
 void queue_destroy(Queue* q) {
     QueueElement* current = q->head;
 
     if (q->policy == PRIORITY){
+        q->should_terminate = 1;
         pthread_cancel(q->aging_thread);
         pthread_join(q->aging_thread, NULL);
     }
@@ -81,12 +79,13 @@ void* aging_thread_function(void* arg) {
     Queue* q = (Queue*)arg;
     struct timespec ts = {0, 10000000}; // 100ms
 
-    while (1) {
+    while (!q->should_terminate) {
         nanosleep(&ts, NULL);
         update_priorities(q);
     }
     return NULL;
 }
+
 
 
 void update_priorities(Queue* q) {

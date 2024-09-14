@@ -36,6 +36,7 @@ typedef struct {
     pthread_t aging_thread;
     pthread_cond_t update_cond;
     pthread_mutex_t update_mutex;
+    int should_terminate;
 } Queue;
 
 // Dichiarazione delle funzioni pubbliche della coda
