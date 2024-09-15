@@ -31,7 +31,6 @@ void* thread_function(void* arg) {
         //Generatore di numeri cassuali thread_safe
         int priority = generate_random_priority();
         queue_push(&queue, data, priority);
-        print_queue_state(&queue);
 
         //Cerca l'elemento nella coda e stampa le informazioni
         thread_safety_lock(&queue.ts);
@@ -45,10 +44,10 @@ void* thread_function(void* arg) {
             current = current->next;
         }
         thread_safety_unlock(&queue.ts);
+        print_queue_state(&queue);
 
         struct timespec ts = {0, 3000000}; // 3 millisecondi
         nanosleep(&ts, NULL);
-        //usleep(3000);
 
         if (i % 2 == 0) {  // Ogni due push, facciamo un pull
             ArrayElementData* array = queue_to_array(&queue, &queue.size);
