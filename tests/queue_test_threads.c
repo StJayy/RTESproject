@@ -100,6 +100,9 @@ int main() {
 
     // Verifica finale
     printf("Dimensione finale della coda: %d\n", queue.size);
+    //Il numero di push deve essere circa il doppio del numero di pull
+    //di conseguenza mi aspetto che la dimensione della coda sia compresa
+    //tra 1/3 e 2/3 del numero di thread * operazioni per thread
     assert(queue.size >= NUM_THREADS * OPERATIONS_PER_THREAD / 3 && 
            queue.size <= NUM_THREADS * OPERATIONS_PER_THREAD * 2 / 3);
     // Pulizia della coda
