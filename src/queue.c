@@ -55,9 +55,11 @@ void queue_destroy(Queue* q) {
     QueueElement* current = q->head;
 
     if (q->policy == PRIORITY){
+        thread_safety_lock(&q->ts);
         q->should_terminate = 1;
         pthread_cancel(q->aging_thread);
         pthread_join(q->aging_thread, NULL);
+        thread_safety_unlock(&q->ts);
     }
 
     while (current != NULL) {
@@ -89,7 +91,10 @@ void* queue_pull(Queue* q) {
 void* aging_thread_function(void* arg) {
     Queue* q = (Queue*)arg;
     struct timespec ts;
+
+    thread_safety_lock(&q->ts);
     while (!q->should_terminate) {
+        thread_safety_unlock(&q->ts);
         pthread_mutex_lock(&q->update_mutex);
         /* Questa struttura a differenza di un semplice sleep() facilita la 
         coordinazione con altri thread e ne migliora la flessibilità */ 
@@ -100,14 +105,16 @@ void* aging_thread_function(void* arg) {
         pthread_mutex_unlock(&q->update_mutex);
 
         update_priorities(q);
+        thread_safety_lock(&q->ts);
+
     }
     return NULL;
 }
 
 
 void update_priorities(Queue* q) {
-    pthread_mutex_lock(&q->update_mutex);
     thread_safety_lock(&q->ts);
+    pthread_mutex_lock(&q->update_mutex);
 
     QueueElement* current = q->head;
     //Aggiorna le priorità degli elementi nella coda
@@ -124,14 +131,15 @@ void update_priorities(Queue* q) {
         current = current->next;
     }
 
-    thread_safety_unlock(&q->ts);
     pthread_cond_broadcast(&q->update_cond);
     pthread_mutex_unlock(&q->update_mutex);
+    thread_safety_unlock(&q->ts);
 }
 
 
 void print_queue_state(Queue* q) {
     thread_safety_lock(&q->ts);
+    pthread_mutex_lock(&q->update_mutex);
     QueueElement* current = q->head;
     printf("Queue state (%d elements): ", q->size);
     while (current != NULL) {
@@ -140,6 +148,7 @@ void print_queue_state(Queue* q) {
         current = current->next;
     }
     printf("\n");
+    pthread_mutex_unlock(&q->update_mutex);
     thread_safety_unlock(&q->ts);
 }
 
