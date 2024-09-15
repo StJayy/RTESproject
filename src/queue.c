@@ -1,13 +1,15 @@
-
-#define _POSIX_C_SOURCE 200809L
+//Garantire la compatibilità con sistemi operativi diversi, come Windows, che non supportano la funzione clock_gettime()
+//clock_gettime() è una funzione per misurare il tempo ad alta precisione
+#define _POSIX_C_SOURCE 200809L //Abilita alcune funzionalità POSIX
 #include <time.h>
 
-#ifdef _WIN32
+#ifdef _WIN32 //Controlla se il codice sta compilando per Windows
 #include <windows.h>
 #ifndef CLOCK_REALTIME
 #define CLOCK_REALTIME 0
 #endif
 
+//Implementazione della funzione clock_gettime() per Windows
 int clock_gettime(int clk_id, struct timespec *tp) {
     (void)clk_id;
     FILETIME ft;
@@ -28,17 +30,7 @@ int clock_gettime(int clk_id, struct timespec *tp) {
 #include <stdio.h>
 #include <pthread.h>
 #include <unistd.h>
-#include <time.h>
 
-/*
-#ifndef CLOCK_MONOTONIC
-#define CLOCK_MONOTONIC 1
-#endif
-
-#ifndef TIMER_ABSTIME
-#define TIMER_ABSTIME 1
-#endif
-*/
 
 
 void queue_init(Queue* q, SchedulingPolicy policy) {
@@ -109,21 +101,20 @@ void* aging_thread_function(void* arg) {
 }
 
 
-
-
 void update_priorities(Queue* q) {
     pthread_mutex_lock(&q->update_mutex);
     thread_safety_lock(&q->ts);
 
     QueueElement* current = q->head;
+    //Aggiorna le priorità degli elementi nella coda
     while (current != NULL) {
         current->age++;
         if (current->age >= 10 && current->priority < MAX_PRIORITY) {
+            //Aumenta la priorità dell'elemento se è stato in coda per almeno 10 unità di tempo
             current->priority++;
             current->age = 0;
             printf("PROCESSO %d UPGRADE DI PRIORITA A %d\n", *(int*)current->data, current->priority);
         }
-
         current = current->next;
     }
 

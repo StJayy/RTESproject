@@ -7,7 +7,6 @@
 #include <stdatomic.h>
 #include <time.h>
 
-
 #define NUM_THREADS 5
 #define OPERATIONS_PER_THREAD 7
 

@@ -7,7 +7,6 @@
 #define MAX_PRIORITY 10
 #endif
 
-
 // Definizione delle politiche di scheduling
 typedef enum {
     FIFO,
@@ -35,11 +34,11 @@ typedef struct {
     QueueElement* tail;              // Puntatore all'ultimo elemento della coda
     int size;                        // Numero di elementi nella coda
     SchedulingPolicy policy;         // Politica di scheduling della coda
-    ThreadSafety ts;
-    pthread_t aging_thread;
-    pthread_cond_t update_cond;
-    pthread_mutex_t update_mutex;
-    int should_terminate;
+    ThreadSafety ts;                 // Mutex per la sicurezza delle operazioni di base della coda
+    pthread_t aging_thread;          // Thread per l'aggiornamento delle priorità
+    pthread_cond_t update_cond;      // Condizione per l'aggiornamento delle priorità
+    pthread_mutex_t update_mutex;    // Mutex per l'aggiornamento delle priorità
+    int should_terminate;            // Flag per indicare se il thread di aggiornamento deve terminare
 } Queue;
 
 // Dichiarazione delle funzioni pubbliche della coda
