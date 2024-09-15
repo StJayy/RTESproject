@@ -13,12 +13,12 @@
 atomic_uint seed;
 Queue queue;
 
-//È un generatore di numeri casuali in thread safe, un normale rand()
-//puo' dare problemi quando il numero di thread è alto
+/* È un generatore di numeri casuali in thread safe, un normale 
+rand() puo' dare problemi quando il numero di thread è alto */
 int generate_random_priority() {
     unsigned int old_seed = atomic_fetch_add(&seed, 1);
-    //I due numeri sono costanti scelte specificicatamente per le loro proprietà
-    //matematiche ed aiutano a garantire una buona distribuzione dei numeri generati
+    /* I due numeri sono costanti scelte specificicatamente per le loro proprietà
+    matematiche ed aiutano a garantire una buona distribuzione dei numeri generati */
     return (old_seed * 1103515245 + 12345) % 10 + 1;
 }
 
@@ -100,9 +100,9 @@ int main() {
 
     // Verifica finale
     printf("Dimensione finale della coda: %d\n", queue.size);
-    //Il numero di push deve essere circa il doppio del numero di pull
-    //di conseguenza mi aspetto che la dimensione della coda sia compresa
-    //tra 1/3 e 2/3 del numero di thread * operazioni per thread
+    /* Il numero di push deve essere circa il doppio del numero di pull
+    di conseguenza mi aspetto che la dimensione della coda sia compresa
+    tra 1/3 e 2/3 del numero di thread * operazioni per thread */
     assert(queue.size >= NUM_THREADS * OPERATIONS_PER_THREAD / 3 && 
            queue.size <= NUM_THREADS * OPERATIONS_PER_THREAD * 2 / 3);
     // Pulizia della coda

@@ -1,5 +1,6 @@
-//Garantire la compatibilità con sistemi operativi diversi, come Windows, che non supportano la funzione clock_gettime()
-//clock_gettime() è una funzione per misurare il tempo ad alta precisione
+/* Garantire la compatibilità con sistemi operativi diversi, come Windows, 
+che non supportano la funzione clock_gettime() clock_gettime() è una funzione 
+per misurare il tempo ad alta precisione */
 #define _POSIX_C_SOURCE 200809L //Abilita alcune funzionalità POSIX
 #include <time.h>
 
