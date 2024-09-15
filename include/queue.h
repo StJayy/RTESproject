@@ -3,7 +3,10 @@
 #include "thread_safety.h"
 #include <stddef.h>
 
+#ifndef MAX_PRIORITY
 #define MAX_PRIORITY 10
+#endif
+
 
 // Definizione delle politiche di scheduling
 typedef enum {

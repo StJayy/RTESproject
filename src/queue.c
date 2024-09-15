@@ -9,6 +9,7 @@
 #endif
 
 int clock_gettime(int clk_id, struct timespec *tp) {
+    (void)clk_id;
     FILETIME ft;
     ULARGE_INTEGER li;
     GetSystemTimeAsFileTime(&ft);
@@ -29,6 +30,7 @@ int clock_gettime(int clk_id, struct timespec *tp) {
 #include <unistd.h>
 #include <time.h>
 
+/*
 #ifndef CLOCK_MONOTONIC
 #define CLOCK_MONOTONIC 1
 #endif
@@ -36,6 +38,7 @@ int clock_gettime(int clk_id, struct timespec *tp) {
 #ifndef TIMER_ABSTIME
 #define TIMER_ABSTIME 1
 #endif
+*/
 
 
 void queue_init(Queue* q, SchedulingPolicy policy) {
