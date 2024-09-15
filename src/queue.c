@@ -39,7 +39,8 @@ void queue_init(Queue* q, SchedulingPolicy policy) {
     q->tail = NULL;
     q->size = 0;
     q->policy = policy;
-    thread_safety_init(&q->ts); //Mutex che protegge le operazioni di base della coda (push, pull) 
+    //Mutex che protegge le operazioni di base della coda (push, pull)
+    thread_safety_init(&q->ts);  
     if (policy == PRIORITY){
         pthread_create(&q->aging_thread, NULL, aging_thread_function, q);
     }
@@ -90,10 +91,12 @@ void* aging_thread_function(void* arg) {
     struct timespec ts;
     while (!q->should_terminate) {
         pthread_mutex_lock(&q->update_mutex);
-        //Questa struttura a differenza di un semplice sleep() facilita la coordinazione con altri thread e ne migliora la flessibilità 
+        /* Questa struttura a differenza di un semplice sleep() facilita la 
+        coordinazione con altri thread e ne migliora la flessibilità */ 
         clock_gettime(CLOCK_REALTIME, &ts);
-        ts.tv_nsec += 1000000;  //100ms
-        pthread_cond_timedwait(&q->update_cond, &q->update_mutex, &ts); //thread rimane bloccato per tempo ts
+        ts.tv_nsec += 1000000;  //1000000ns = 1ms
+        //thread rimane bloccato per tempo ts
+        pthread_cond_timedwait(&q->update_cond, &q->update_mutex, &ts);
         pthread_mutex_unlock(&q->update_mutex);
 
         update_priorities(q);
@@ -111,10 +114,12 @@ void update_priorities(Queue* q) {
     while (current != NULL) {
         current->age++;
         if (current->age >= 10 && current->priority < MAX_PRIORITY) {
-            //Aumenta la priorità dell'elemento se è stato in coda per almeno 10 unità di tempo
+            /* Aumenta la priorità dell'elemento se è stato
+             in coda per almeno 10 unità di tempo */
             current->priority++;
             current->age = 0;
-            printf("PROCESSO %d UPGRADE DI PRIORITA A %d\n", *(int*)current->data, current->priority);
+            printf("PROCESSO %d UPGRADE DI PRIORITA A %d\n", 
+             *(int*)current->data, current->priority);
         }
         current = current->next;
     }
@@ -130,7 +135,8 @@ void print_queue_state(Queue* q) {
     QueueElement* current = q->head;
     printf("Queue state (%d elements): ", q->size);
     while (current != NULL) {
-        printf("(%d, p:%d, a:%d) ", *(int*)current->data, current->priority, current->age);
+        printf("(%d, p:%d, a:%d) ", *(int*)current->data, 
+           current->priority, current->age);
         current = current->next;
     }
     printf("\n");

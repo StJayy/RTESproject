@@ -31,19 +31,20 @@ void* thread_function(void* arg) {
         //Generatore di numeri cassuali thread_safe
         int priority = generate_random_priority();
         queue_push(&queue, data, priority);
+        print_queue_state(&queue);
 
-        ArrayElementData* array = queue_to_array(&queue, &queue.size);
-        if (array != NULL) {
-            for (int j = 0; j < queue.size; j++) {
-                if (*(int*)array[j].data == *data) {
-                    printf("Thread %d: pushed element %d - Priority: %d, Age: %d\n", 
-                            thread_id, *data, priority, array[j].age);
-                    print_queue_state(&queue);
-                    break;
-                }
+        //Cerca l'elemento nella coda e stampa le informazioni
+        thread_safety_lock(&queue.ts);
+        QueueElement* current = queue.head;
+        while (current != NULL) {
+            if (*(int*)current->data == *data) {
+                printf("Thread %d: pushed element %d - Priority: %d, Age: %d\n", 
+                 thread_id, *data, priority, current->age);
+                break;
             }
-            free(array);
+            current = current->next;
         }
+        thread_safety_unlock(&queue.ts);
 
         struct timespec ts = {0, 3000000}; // 3 millisecondi
         nanosleep(&ts, NULL);
@@ -54,7 +55,8 @@ void* thread_function(void* arg) {
             if (array != NULL && queue.size > 0) {
                 int* pulled_data = (int*)queue_pull(&queue);
                 if (pulled_data != NULL) {
-                    printf("thread %d: pulled %d (age: %d)\n", thread_id, *pulled_data, array[0].age);
+                    printf("thread %d: pulled %d (age: %d)\n", thread_id, 
+                      *pulled_data, array[0].age);
                     free(pulled_data);
                 }
                 free(array);

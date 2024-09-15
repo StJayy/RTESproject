@@ -27,8 +27,12 @@ void add_element_to_queue(Queue* q, void* data, int priority) {
         if (q->tail == NULL) {
             q->tail = newElement;  // Se la coda era vuota, questo elemento è anche il tail
         }
+
+
+
     } else if (q->policy == PRIORITY) {
-        // Per la coda con priorità, inseriamo in base alla priorità, il valore priorità più basso va messo all'inizio della coda
+        // Per la coda con priorità, inseriamo in base alla priorità, 
+        //il valore priorità più basso va messo all'inizio della coda
         if (q->head == NULL || q->head->priority > priority) {
             newElement->next = q->head;
             q->head = newElement;
@@ -44,7 +48,8 @@ void add_element_to_queue(Queue* q, void* data, int priority) {
             newElement->next = current->next;
             current->next = newElement;
             if (current->next == NULL) {
-                q->tail = newElement; // Aggiornamento del tail se l'elemento è aggiunto alla fine
+                // Se l'elemento è stato inserito alla fine della coda, aggiorniamo il puntatore tail
+                q->tail = newElement; 
             }
         }
     }
@@ -65,6 +70,8 @@ void* remove_element_from_queue(Queue* q) {
         if (q->head == NULL) {
             q->tail = NULL; // Se la coda si svuota
         }
+
+
     } else if (q->policy == PRIORITY) {
         // Per la priorità con aging, troviamo l'elemento con la priorità effettiva più alta
         QueueElement* current = q->head;
@@ -72,11 +79,10 @@ void* remove_element_from_queue(Queue* q) {
         QueueElement* highest_priority = current;
         QueueElement* highest_priority_prev = NULL;
 
+        // Cerchiamo l'elemento con la priorità più alta
         while (current != NULL) {
-            //int current_priority = current->priority + (current->age / 10);
             int current_priority = current->priority;
             int  highest_priority_value = highest_priority->priority;
-            //int highest_priority_value = highest_priority->priority + (highest_priority->age / 10);
 
             if (current_priority > highest_priority_value) {
                 highest_priority = current;
