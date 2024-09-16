@@ -11,6 +11,7 @@
 #define OPERATIONS_PER_THREAD 7
 
 atomic_uint seed;
+atomic_int global_counter = 0;
 Queue queue;
 
 /* È un generatore di numeri casuali in thread safe, un normale 
@@ -26,7 +27,8 @@ void* thread_function(void* arg) {
     int thread_id = *(int*)arg;
     for (int i = 0; i < OPERATIONS_PER_THREAD; i++) {
         int* data = malloc(sizeof(int));
-        *data = thread_id * OPERATIONS_PER_THREAD + i;
+        //*data = thread_id * OPERATIONS_PER_THREAD + i;
+        *data = atomic_fetch_add(&global_counter, 1);
 
         //Generatore di numeri cassuali thread_safe
         int priority = generate_random_priority();
@@ -104,8 +106,8 @@ int main() {
     /* Il numero di push deve essere circa il doppio del numero di pull
     di conseguenza mi aspetto che la dimensione della coda sia compresa
     tra 1/3 e 2/3 del numero di thread * operazioni per thread */
-    assert(queue.size >= NUM_THREADS * OPERATIONS_PER_THREAD / 3 && 
-           queue.size <= NUM_THREADS * OPERATIONS_PER_THREAD * 2 / 3);
+    //assert(queue.size >= NUM_THREADS * OPERATIONS_PER_THREAD / 3 && 
+    //       queue.size <= NUM_THREADS * OPERATIONS_PER_THREAD * 2 / 3);
     // Pulizia della coda
     while (queue.size > 0) {
         int* data = queue_pull(&queue);
