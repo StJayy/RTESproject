@@ -65,7 +65,7 @@ mingw32-make
 Dopo la compilazione, puoi eseguire i test con:
 
 ```bash
-./queue_test_threads
+./queue_test
 ```
 
 
