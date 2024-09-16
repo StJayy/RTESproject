@@ -21,6 +21,11 @@ cd build
 cmake ..
 ```
 
+3. Compilare normalmente con make:
+
+```bash
+make
+```
 
 ## Compilazione su Sistemi Specifici
 
